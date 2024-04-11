@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import time
 import os
 import six
 from six.moves import range
@@ -41,6 +42,7 @@ def download_and_unzip_zip(url, target_folder):
     response = urlopen(req)
     out_file = open(temp_zip_path, 'wb')
     shutil.copyfileobj(response, out_file)
+    time.sleep(60)
 
     extract_zip(temp_zip_path, target_folder)
 
