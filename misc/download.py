@@ -33,6 +33,7 @@ def extract_zip(zip_file_path, target_folder):
     except subprocess.CalledProcessError as e:
         print("Failed to extract ZIP file")
     
+    print('size: ', os.path.getsize(zip_file_path))
 
 def download_and_unzip_zip(url, target_folder):
     print('download')
