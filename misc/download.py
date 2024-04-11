@@ -13,7 +13,9 @@ import zipfile
 import os
 import shutil
 import subprocess
+import hashlib
 
+timeout = 1
 
 def extract_zip(zip_file_path, target_folder):
     print('extract')
@@ -37,14 +39,18 @@ def download_and_unzip_zip(url, target_folder):
     # Define the path for the temporary downloaded ZIP file
     req = Request(url)
     
-    temp_zip_path = os.path.join(target_folder, url.split('/')[-1])
+    zip_path = os.path.join(target_folder, url.split('/')[-1])
     # Download the ZIP file
-    response = urlopen(req)
-    out_file = open(temp_zip_path, 'wb')
-    shutil.copyfileobj(response, out_file)
-    time.sleep(60)
+    response = urlopen(req, timeout=timeout)
+    out_buffer = open(zip_path, 'wb')
+    shutil.copyfileobj(response, out_buffer)
+    size = os.path.getsize(zip_path)
+    print('size: ', size)
+    md5 = hashlib.md5(open(zip_path,'rb').read()).hexdigest()
+    print('md5: ', md5)
+    #time.sleep(60)
 
-    extract_zip(temp_zip_path, target_folder)
+    extract_zip(zip_path, target_folder)
 
 
 url = "https://storage.googleapis.com/sauce-devx-runners-bhtb/cypress-macos-amd64-8622143467.zip"
